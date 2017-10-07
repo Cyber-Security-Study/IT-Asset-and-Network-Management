@@ -19,6 +19,10 @@ mean the same thing but are all defined in separate asset types.
 There should be rapid searching available (e.g. "find a laptop with the
 following serial number")
 
+There should be a concept of one type of asset being able to contain another.
+For example, VM hosts can contain VMs, blade enclosures can contain blade
+servers.etc.
+
 It should be possible to log various comments against an item.  The types of
 types of these should be configurable however sensible defaults could include
 "upgrade", "fault", "service call", "fault resolution", "repurpose."
