@@ -102,3 +102,4 @@ ENV/
 
 .DS_STORE
 *.mwb.bak
+Application/.idea
