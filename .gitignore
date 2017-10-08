@@ -103,3 +103,5 @@ ENV/
 .DS_STORE
 *.mwb.bak
 Application/.idea
+Application/node_modules
+Application/alethea/static

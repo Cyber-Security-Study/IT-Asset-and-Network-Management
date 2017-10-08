@@ -1,0 +1,11 @@
+{
+  "name": "Alethea",
+  "version": "0.1",
+  "description": "IT Asset and Network Documentation System",
+  "main": "index.js",
+  "author": "Cameron Gray",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
