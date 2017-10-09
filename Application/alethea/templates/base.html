@@ -1,3 +1,27 @@
-<h1>Hello from base.html</h1>
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block body %}{% endblock %}
+        <link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'font-awesome/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'css/overrides.css' %}">
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Alethea</a>
+            <ul class="navbar-nav">
+                <li class="navbar-item">
+                    <a class="nav-link" href="{% url 'ipam:index' %}">IP Address Management</a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container" id="body-container">
+            <h1>{% block title %}PAGE TITLE NOT SET{% endblock %}</h1>
+            {% block body %}{% endblock %}
+        </div>
+    </body>
+</html>

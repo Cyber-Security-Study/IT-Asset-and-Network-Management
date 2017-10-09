@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block title %}IP Address Management{% endblock %}
+{% block body %}
+    <div class="float-right">
+        <a href="{% url 'ipam:subnets_add' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Subnet</a>
+    </div>
+{% endblock %}
