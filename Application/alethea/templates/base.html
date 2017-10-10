@@ -21,6 +21,11 @@
 
         <div class="container" id="body-container">
             <h1>{% block title %}PAGE TITLE NOT SET{% endblock %}</h1>
+            {% if error_message %}
+                <div class="alert alert-danger">
+                    {{ error_message | safe }}
+                </div>
+            {% endif %}
             {% block body %}{% endblock %}
         </div>
     </body>
