@@ -15,7 +15,7 @@ class DhcpRange(models.Model):
 
 class IpAddress(models.Model):
     address = models.CharField(max_length=255)
-    descripton = models.TextField()
+    description = models.TextField()
     is_failover = models.BooleanField()
     subnet = models.ForeignKey(Subnet, on_delete=models.CASCADE)
 

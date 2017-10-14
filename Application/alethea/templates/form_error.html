@@ -1,0 +1,8 @@
+{{ message }}
+{% if field_errors %}
+    <ul>
+        {% for field_error in field_errors %}
+            <li><strong>{{ field_error.field }}</strong> - {{ field_error.error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}

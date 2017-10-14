@@ -2,7 +2,30 @@
 
 {% block title %}IP Address Management{% endblock %}
 {% block body %}
-    <div class="float-right">
+    <div class="actions-area">
         <a href="{% url 'ipam:subnets_add' %}" class="btn btn-primary"><i class="fa fa-plus"></i> Add Subnet</a>
     </div>
+
+    <table class="table table-striped">
+        <thead class="thead-inverse">
+        <tr>
+            <th>Name</th>
+            <th>Subnet</th>
+            <th>Utilisation</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for subnet in subnets %}
+        <tr>
+            <td><a href="{% url 'ipam:subnets_view' subnet_id=subnet.id %}">{{ subnet.name }}</a></td>
+            <td><a href="{% url 'ipam:subnets_view' subnet_id=subnet.id %}">{{ subnet.address }}/{{ subnet.netmask }}</a></td>
+            <td>Todo</td>
+            <td>
+                <a href="{% url 'ipam:subnets_delete' subnet_id=subnet.id %}" class="btn btn-danger" title="Delete Subnet"><i class="fa fa-trash"></i></a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

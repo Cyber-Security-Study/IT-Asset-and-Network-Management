@@ -5,7 +5,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms_extensions.layouts import HorizontalField
 from django.core.validators import validate_ipv4_address
 
-
+# TODO: Needs more advanced validation to support IPv6 addresses, ideally mask_bits should have its limits adjusted
+# depending if the address is v4 or v6
 class SubnetForm(forms.Form):
     name = forms.CharField(label="Name", max_length=255)
     address = forms.CharField(label="IP Address", max_length=45, validators=[validate_ipv4_address])
