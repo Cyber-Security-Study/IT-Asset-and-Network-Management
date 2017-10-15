@@ -22,7 +22,7 @@
             <td><a href="{% url 'ipam:subnets_view' subnet_id=subnet.id %}">{{ subnet.address }}/{{ subnet.netmask }}</a></td>
             <td>Todo</td>
             <td>
-                <a href="{% url 'ipam:subnets_delete' subnet_id=subnet.id %}" class="btn btn-danger" title="Delete Subnet"><i class="fa fa-trash"></i></a>
+                <a href="{% url 'ipam:subnets_delete' subnet_id=subnet.id %}" class="btn btn-danger btn-tiny" title="Delete Subnet"><i class="fa fa-trash"></i> Delete</a>
             </td>
         </tr>
         {% endfor %}

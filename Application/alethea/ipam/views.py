@@ -111,3 +111,20 @@ def subnets_add(request):
         form = SubnetForm()
 
     return render(request, "subnets_add.html", {"form": form})
+
+
+def addresses_delete(request, address_id):
+    address = get_object_or_404(models.IpAddress, pk=address_id)
+
+    return_to_page = reverse("ipam:subnets_view", kwargs={"subnet_id": address.subnet_id})
+
+    if request.method == "POST":
+        address.delete()
+        messages.add_message(request, messages.SUCCESS, "Address has been deleted successfully")
+        return redirect(return_to_page)
+
+    return render(request, "delete_object.html", {
+        "item_type": "address",
+        "item_name": address.address,
+        "cancel_url": return_to_page
+    })

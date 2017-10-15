@@ -31,7 +31,9 @@
             {% else %}
                 <td>{{ row.address.address }}</td>
                 <td>{{ row.address.description }}</td>
-                <td></td>
+                <td>
+                    <a href="{% url 'ipam:addresses_delete' address_id=row.address.id %}" class="btn btn-danger btn-tiny"><i class="fa fa-trash"></i> Delete</a>
+                </td>
             {% endif %}
             </tr>
         {% endfor %}
