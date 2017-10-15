@@ -10,3 +10,18 @@ h1 {
     float: right;
     margin-bottom: 10px;
 }
+
+.btn-tiny {
+    font-size: 75%;
+    padding: .25em .4em;
+    line-height: 1;
+}
+
+.dropdown-menu.dropdown-tiny {
+    padding: 0px !important;
+}
+
+.dropdown-tiny .dropdown-item {
+    font-size: 75%;
+    padding: .25em .4em;
+}

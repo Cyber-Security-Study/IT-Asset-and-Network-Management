@@ -32,11 +32,49 @@ def subnets_delete(request, subnet_id):
 
 def subnets_view(request, subnet_id):
     subnet_data = get_object_or_404(models.Subnet, pk=subnet_id)
+
+    # TODO: The below doesn't like it when given IPv6 ranges (strangely enough!), need to refactor this to not expand
+    # TODO: the entire subnet into a list and try to loop through it!  Loop through used_addresses then count the size
+    # TODO: of the gaps perhaps?
     subnet_addresses = [str(x) for x in list(IPNetwork(f"{subnet_data.address}/{subnet_data.netmask}"))]
 
-    print(subnet_addresses)
+    # Get a dictionary containing each IpAddress as a dictionary, indexed by address
+    used_addresses = dict([(x["address"], x) for x in models.IpAddress.objects.filter(subnet_id=subnet_id).values()])
 
-    pass
+    rows = []
+    unused_count = 0
+    unused_start = None
+    unused_end = None
+    for address in subnet_addresses:
+        if address in used_addresses:
+            if unused_count:
+                rows.append({
+                    "type": "unused",
+                    "unused_count": unused_count,
+                    "unused_start": unused_start,
+                    "unused_end": unused_end
+                })
+                unused_count = 0
+
+            rows.append({
+                "type": "address",
+                "address": used_addresses[address]
+            })
+        else:
+            if unused_count == 0:
+                unused_start = address
+            unused_end = address
+            unused_count += 1
+
+    if unused_count:
+        rows.append({
+            "type": "unused",
+            "unused_count": unused_count,
+            "unused_start": unused_start,
+            "unused_end": unused_end
+        })
+
+    return render(request, "subnets_subnet.html", {"subnet": subnet_data, "rows": rows})
 
 
 def subnets_add(request):

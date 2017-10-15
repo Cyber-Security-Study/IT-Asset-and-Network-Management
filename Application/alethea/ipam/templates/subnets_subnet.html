@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Subnet: {{ subnet.name }}{% endblock %}
+{% block body %}
+    <table class="table table-striped">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Address</th>
+                <th>Description</th>
+                <!-- TODO: Some way to show if an address is failover or not. -->
+                <!-- TODO: Show assigned devices -->
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in rows %}
+            <tr>
+            {% if row.type == "unused" %}
+                <td colspan="2"><span class="badge badge-success">{{ row.unused_count }} unused</span></td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-tiny btn-success dropdown-toggle" data-toggle="dropdown">
+                            Insert Address Here
+                        </button>
+                        <div class="dropdown-menu dropdown-tiny">
+                            <a class="dropdown-item" href="#">Insert at start of range ({{ row.unused_start }})</a>
+                            <a class="dropdown-item" href="#">Insert at end of range ({{ row.unused_end }})</a>
+                        </div>
+                    </div>
+                </td>
+            {% else %}
+                <td>{{ row.address.address }}</td>
+                <td>{{ row.address.description }}</td>
+                <td></td>
+            {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

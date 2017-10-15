@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+{% block body %}
+<div class="card">
+    <div class="card-header">
+        Delete {{ item_type | title }}
+    </div>
+    <div class="card-body">
+        <p class="card-text">Are you sure that you want to delete "{{ item_name }}?"</p>
+        <form method="POST">
+            <a href="{{ cancel_url }}" class="btn btn-default">Cancel</a>
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete {{ item_type | title }}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

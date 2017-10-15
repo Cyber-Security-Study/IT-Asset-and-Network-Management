@@ -9,7 +9,7 @@ from django.core.validators import validate_ipv4_address
 # depending if the address is v4 or v6
 class SubnetForm(forms.Form):
     name = forms.CharField(label="Name", max_length=255)
-    address = forms.CharField(label="IP Address", max_length=45, validators=[validate_ipv4_address])
+    address = forms.CharField(label="IP Address", max_length=45, validators=[])
     mask_bits = forms.IntegerField(label="", min_value=0, max_value=128)
 
     def __init__(self, *args, **kwargs):
