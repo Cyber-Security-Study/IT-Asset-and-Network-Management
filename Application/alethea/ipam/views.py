@@ -37,8 +37,6 @@ def subnets_view(request, subnet_id):
     used_addresses = dict([(x["address"], x) for x in models.IpAddress.objects.filter(subnet_id=subnet_id).values()])
     ordered_addresses = sorted([IPAddress(x) for x in used_addresses.keys()])
 
-    # TODO: Handle if there are no used addresses!
-
     rows = []
 
     if ordered_addresses:
