@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib import messages
-from netaddr import IPNetwork
+from netaddr import IPNetwork, IPAddress, IPRange
 
 from ipam import models
 from .forms import SubnetForm
@@ -32,46 +32,57 @@ def subnets_delete(request, subnet_id):
 
 def subnets_view(request, subnet_id):
     subnet_data = get_object_or_404(models.Subnet, pk=subnet_id)
+    subnet = IPNetwork(f"{subnet_data.address}/{subnet_data.netmask}")
 
-    # TODO: The below doesn't like it when given IPv6 ranges (strangely enough!), need to refactor this to not expand
-    # TODO: the entire subnet into a list and try to loop through it!  Loop through used_addresses then count the size
-    # TODO: of the gaps perhaps?
-    subnet_addresses = [str(x) for x in list(IPNetwork(f"{subnet_data.address}/{subnet_data.netmask}"))]
-
-    # Get a dictionary containing each IpAddress as a dictionary, indexed by address
     used_addresses = dict([(x["address"], x) for x in models.IpAddress.objects.filter(subnet_id=subnet_id).values()])
+    ordered_addresses = sorted([IPAddress(x) for x in used_addresses.keys()])
+
+    # TODO: Handle if there are no used addresses!
 
     rows = []
-    unused_count = 0
-    unused_start = None
-    unused_end = None
-    for address in subnet_addresses:
-        if address in used_addresses:
-            if unused_count:
+
+    if ordered_addresses:
+        unused_start = IPRange(subnet[0], ordered_addresses[0])
+        if unused_start.size - 1:
+            rows.append({
+                "type": "unused",
+                "unused_count": unused_start.size - 1,
+                "unused_start": unused_start[0],
+                "unused_end": unused_start[-2]
+            })
+
+        last_used_address = ordered_addresses[0]
+        for address in ordered_addresses:
+            unused_between = IPRange(last_used_address, address)  # IPs on each end are in use!
+            if (unused_between.size - 2) > 0:
                 rows.append({
                     "type": "unused",
-                    "unused_count": unused_count,
-                    "unused_start": unused_start,
-                    "unused_end": unused_end
+                    "unused_count": unused_between.size - 2,
+                    "unused_start": unused_between[1],
+                    "unused_end": unused_between[-2]
                 })
-                unused_count = 0
 
             rows.append({
                 "type": "address",
-                "address": used_addresses[address]
+                "address": used_addresses[str(address)]
             })
-        else:
-            if unused_count == 0:
-                unused_start = address
-            unused_end = address
-            unused_count += 1
 
-    if unused_count:
+            last_used_address = address
+
+        unused_after = IPRange(ordered_addresses[-1], subnet[-1])
+        if (unused_after.size - 1) > 0:
+            rows.append({
+                "type": "unused",
+                "unused_count": unused_after.size - 1,
+                "unused_start": unused_after[1],
+                "unused_end": unused_after[-1]
+            })
+    else:
         rows.append({
             "type": "unused",
-            "unused_count": unused_count,
-            "unused_start": unused_start,
-            "unused_end": unused_end
+            "unused_count": subnet.size,
+            "unused_start": subnet[0],
+            "unused_end": subnet[-1]
         })
 
     return render(request, "subnets_subnet.html", {"subnet": subnet_data, "rows": rows})
