@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_forms_extensions',
     'ipam',
+    'asset_tracking',
 ]
 
 MIDDLEWARE = [
