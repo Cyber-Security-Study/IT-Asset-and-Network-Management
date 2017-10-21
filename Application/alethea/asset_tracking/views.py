@@ -1,3 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse
 
-# Create your views here.
+
+def index(request):
+    return redirect(reverse("asset_tracking:assets_index"))
+
+
+def assets_index(request):
+    return render(request, "assets_index.html")

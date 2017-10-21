@@ -18,7 +18,7 @@ class Comment(models.Model):
     datetime = models.DateTimeField(auto_now_add=True)
     body = models.TextField()
     comment_type = models.ForeignKey("CommentType", on_delete=models.CASCADE)
-    # TODO: Asset ID
+    asset = models.ForeignKey("Asset")
     # TODO: User ID
 
 
